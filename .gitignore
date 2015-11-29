@@ -1,0 +1,9 @@
+*.c
+*.h
+*.swp
+*.swo
+*~
+.DS_Store
+.idea
+stcalc
+tmp
