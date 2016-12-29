@@ -1,9 +1,11 @@
 *.c
 *.h
+*.o
 *.swp
 *.swo
 *~
 .DS_Store
 .idea
+.vscode
 stcalc
 tmp

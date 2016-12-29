@@ -6,8 +6,10 @@ RM= rm -f
 
 ifeq ($(OS),Darwin)
 	CC= clang
+	LD= clang
 else
 	CC= gcc
+	LD= ld
 endif
 
 YSRC= $(wildcard *.y)
@@ -15,6 +17,7 @@ LSRC= $(wildcard *.l)
 YCSRC= $(YSRC:%.y=%.tab.c)
 LCSRC= $(LSRC:%.l=%.lex.c)
 YHDR= $(YCSRC:%.c=%.h)
+OBJS= $(YCSRC:%.c=%.o) $(LCSRC:%.c=%.o)
 TARGET= $(YSRC:%.y=%)
 
 
@@ -26,7 +29,7 @@ all: $(TARGET)
 
 
 clean:
-	$(RM) $(LCSRC) $(YCSRC) $(YHDR)
+	$(RM) $(LCSRC) $(YCSRC) $(YHDR) $(OBJS)
 
 
 test: $(TARGET) hello.txt
@@ -37,8 +40,12 @@ mrproper: clean
 	$(RM) $(TARGET)
 
 
-$(TARGET): $(YCSRC) $(LCSRC)
-	$(CC) -o $@ $?
+$(TARGET): $(OBJS)
+	$(LD) -o $@ $?
+
+
+.c.o:
+	$(CC) -c $< -o $@
 
 
 %.lex.c: %.l
