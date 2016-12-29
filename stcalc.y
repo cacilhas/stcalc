@@ -7,6 +7,7 @@
     #define STACKSIZE 1024
 
     FILE *yyin;
+    unsigned char not_interactive;
     int yylex(void);
     void yyerror(const char *);
     double stack[STACKSIZE];
@@ -69,13 +70,14 @@ statement
 %%
 
 int main(int argc, char *argv[]) {
-    if (argc == 2)
+    not_interactive = (argc >= 2);
+    if (not_interactive)
         yyin = fopen(argv[1], "r");
 
     memset(stack, 0, STACKSIZE);
     yyparse();
 
-    if (argc == 2)
+    if (not_interactive)
         fclose(yyin);
     return EXIT_SUCCESS;
 }
@@ -83,5 +85,6 @@ int main(int argc, char *argv[]) {
 
 void yyerror(const char *s) {
     fprintf(stderr, "%s\n", s);
-    exit(EXIT_FAILURE);
+    if (not_interactive)
+        exit(EXIT_FAILURE);
 }
