@@ -1,7 +1,14 @@
+OS := $(shell uname)
+
 LEX= flex
 YACC= bison -dy
-CC= clang
 RM= rm -f
+
+ifeq ($(OS),Darwin)
+	CC= clang
+else
+	CC= gcc
+endif
 
 YSRC= $(wildcard *.y)
 LSRC= $(wildcard *.l)
@@ -34,8 +41,8 @@ $(TARGET): $(YCSRC) $(LCSRC)
 	$(CC) -o $@ $?
 
 
-$(LCSRC): $(LSRC) $(YCSRC)
+%.lex.c: %.l
 	$(LEX) -o $@ $<
 
-$(YCSRC): $(YSRC)
+%.tab.c: %.y
 	$(YACC) -o $@ $<

@@ -10,10 +10,10 @@
 
 [ \s\t\r\n] ;   // whitespaces
 
-0\.?                { yylval.dValue = atof(yytext); return NUMBER; }
-[1-9][0-9]*\.?      { yylval.dValue = atof(yytext); return NUMBER; }
-\.[0-9]+            { yylval.dValue = atof(yytext); return NUMBER; }
-[1-9][0-9]\.[0-9]+  { yylval.dValue = atof(yytext); return NUMBER; }
+0\.?                    { yylval.dValue = atof(yytext); return NUMBER; }
+[1-9][0-9]\.[0-9]+      { yylval.dValue = atof(yytext); return NUMBER; }
+[1-9][0-9]*\.?/[^0-9]   { yylval.dValue = atof(yytext); return NUMBER; }
+\.[0-9]+                { yylval.dValue = atof(yytext); return NUMBER; }
 
 [-+*/^] { yylval.cValue = *yytext; return OPERATOR; }
 =       { return PRINT_NUMBER; }
