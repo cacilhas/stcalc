@@ -9,7 +9,7 @@ ifeq ($(OS),Darwin)
 	LD= clang
 else
 	CC= gcc
-	LD= ld
+	LD= gcc
 endif
 
 YSRC= $(wildcard *.y)
@@ -41,7 +41,7 @@ mrproper: clean
 
 
 $(TARGET): $(OBJS)
-	$(LD) -o $@ $?
+	$(LD) $? -lm -o $@
 
 
 .c.o:
